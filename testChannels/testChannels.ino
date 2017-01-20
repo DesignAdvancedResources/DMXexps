@@ -3,15 +3,16 @@
 #include <DmxMaster.h>
 
 int delayIncr = 50;
-int maxChan = 8;
+int maxChan = 119;
+int initChan = 110;
 
 int channel;
 
 void setup() {
   Serial.begin(9600);
   DmxMaster.usePin(3);
-  DmxMaster.maxChannel(4);
-  channel = 1; //no zero channel
+  DmxMaster.maxChannel(512);
+  channel = initChan; //no zero channel
   
 }
 
@@ -21,10 +22,10 @@ void loop() {
     
     /* Update DMX channel 1 to new brightness */
     DmxMaster.write(channel, brightness);
-    DmxMaster.write(channel+4, brightness); // só para maquinas iguais
+    //DmxMaster.write(channel+4, brightness); // só para maquinas iguais
     delay(random(delayIncr));
     DmxMaster.write(channel, 0);
-    DmxMaster.write(channel+4, 0);
+    //DmxMaster.write(channel+4, 0);
     Serial.print(channel);
     Serial.print(" - ");
     Serial.println(brightness);
@@ -33,15 +34,10 @@ void loop() {
   }
   channel++;
   
-  DmxMaster.write(channel-1, random(40));
-  DmxMaster.write(channel-2, random(40));
-  DmxMaster.write(channel-3, random(40));
-  DmxMaster.write(channel+4-1, random(40)); // só para maquinas iguais comentar
-  DmxMaster.write(channel+4-2, random(40));
-  DmxMaster.write(channel+4-3, random(40));
+
 
   if (channel == maxChan) {
-    channel = 1; //no zero channel
+    channel = initChan; //no zero channel
     }
 
 }
